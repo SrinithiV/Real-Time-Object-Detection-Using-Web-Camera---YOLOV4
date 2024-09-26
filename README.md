@@ -36,17 +36,12 @@ REGISTER NO : 212222110046
 ```py
 import cv2
 import numpy as np
-
 net = cv2.dnn.readNet("yolov4.weights", "yolov4.cfg")
-
 with open("coco.names", "r") as f:
     classes = [line.strip() for line in f.readlines()]
-
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers().flatten()]
-
 cap = cv2.VideoCapture(0)
-
 while True:
     ret, frame = cap.read()
     height, width, channels = frame.shape
@@ -56,7 +51,6 @@ while True:
     boxes = []
     confidences = []
     class_ids = []
-
     for output in outputs:
         for detection in output:
             scores = detection[5:]
@@ -78,8 +72,7 @@ while True:
             x, y, w, h = boxes[i]
             label = str(classes[class_ids[i]])
             confidence = confidences[i]
-
-            color = (0, 255, 0)  # Green color for bounding boxes
+            color = (0, 255, 0) 
             cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
             cv2.putText(frame, f"{label} {confidence:.2f}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     cv2.imshow("YOLOv4 Real-Time Object Detection", frame)
